@@ -153,22 +153,22 @@ def main():
     if not os.path.isdir(options.dipcall_dir) and os.path.exists(options.dipcall_dir):
         raise ValueError("--dipcall_dir is a file, not a directory.")
     elif not os.path.isdir(options.dipcall_dir) and not os.path.exists(options.dipcall_dir):
-        os.mkdir(options.dipcall_dir)
+        os.makedirs(options.dipcall_dir)
     #ensure liftover_dir exists and hasn't a "/" at the end:
     if not os.path.isdir(options.liftover_dir) and os.path.exists(options.liftover_dir):
         raise ValueError("--liftover_dir is a file, not a directory.")
     elif not os.path.isdir(options.liftover_dir) and not os.path.exists(options.liftover_dir):
-        os.mkdir(options.liftover_dir)
+        os.makedirs(options.liftover_dir)
     #ensure output_dir exists and hasn't a "/" at the end:
     if not os.path.isdir(options.output_dir) and os.path.exists(options.output_dir):
         raise ValueError("--output_dir is a file, not a directory.")
     elif not os.path.isdir(options.output_dir) and not os.path.exists(options.output_dir):
-        os.mkdir(options.output_dir)
+        os.makedirs(options.output_dir)
     #ensure intermediate_dir exists and hasn't a "/" at the end:
     if not os.path.isdir(options.intermediate_dir) and os.path.exists(options.intermediate_dir):
         raise ValueError("--intermediate_dir is a file, not a directory.")
     elif not os.path.isdir(options.intermediate_dir) and not os.path.exists(options.intermediate_dir):
-        os.mkdir(options.intermediate_dir)
+        os.makedirs(options.intermediate_dir)
 
     if options.dipcall_dir[-1] == "/":
         options.dipcall_dir = options.dipcall_dir[:-1]
@@ -201,3 +201,8 @@ def main():
     
 if __name__ == "__main__":
     main()
+
+#%%
+output_dir = "chr20_test/chr20_ref_mapping_depth_output_using_genome_cov/"
+
+print(output_dir)
