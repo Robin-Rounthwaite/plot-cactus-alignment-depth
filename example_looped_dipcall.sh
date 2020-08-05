@@ -1,3 +1,4 @@
+#for use in the dipcall.kit directory.
 seqdir=small_chr21
 echo "seqdir: $seqdir"
 
