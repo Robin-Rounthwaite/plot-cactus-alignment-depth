@@ -47,18 +47,34 @@ def main():
     # parser.add_argument('--intermediate_dir', help='Name of the output file.', default="intermediate_files/", type=str)
     # options = parser.parse_args()
 
+
     ## chr20 test:
-    options = SimpleNamespace()
-    options.gam = "/home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam"
-    options.xg = "/home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg"
-    options.xg_chrom = "hg38_chr20.chr20"
-    options.chrom = options.xg_chrom
-    # options.chrom = "chr20"
-    options.reads_name = "HG002-glenn_giabfeb26"
-    options.full_chrom_length = 64444167
-    options.interval_length = 1000000 # reasonable number of bins
-    options.intermediate_dir = "chr20_test/plot_alignment_depth.from_gam/intermediate_files"
-    options.output_dir = "chr20_test/plot_alignment_depth.from_gam/"
+    # python plot_alignment_depth.from_gam.py /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 chr20_test/plot_alignment_depth.from_gam/intermediate_files chr20_test/plot_alignment_depth.from_gam/
+    parser = ArgumentParser()
+    parser.add_argument("gam", help='', type=str)
+    parser.add_argument("xg", help='', type=str)
+    parser.add_argument("xg_chrom", help='', type=str)
+    parser.add_argument("reads_name", help='', type=str)
+    parser.add_argument("full_chrom_length", help='', type=int) 
+    parser.add_argument("interval_length", help='', type=int)
+    parser.add_argument("intermediate_dir", help='', type=str)
+    parser.add_argument("output_dir", help='', type=str)
+    options = parser.parse_args()
+
+    options.xg_chrom = options.chrom
+
+    # ## chr20 test:
+    # options = SimpleNamespace()
+    # options.gam = "/home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam"
+    # options.xg = "/home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg"
+    # options.xg_chrom = "hg38_chr20.chr20"
+    # options.chrom = options.xg_chrom
+    # # options.chrom = "chr20"
+    # options.reads_name = "HG002-glenn_giabfeb26"
+    # options.full_chrom_length = 64444167
+    # options.interval_length = 1000000 # reasonable number of bins
+    # options.intermediate_dir = "chr20_test/plot_alignment_depth.from_gam/intermediate_files"
+    # options.output_dir = "chr20_test/plot_alignment_depth.from_gam/"
 
     ## cleaning input dirs:
     #ensure output_dir exists and hasn't a "/" at the end:
