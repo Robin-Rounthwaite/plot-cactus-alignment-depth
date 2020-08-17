@@ -65,7 +65,7 @@ def main():
     parser.add_argument("interval_length", help='', type=int)
     parser.add_argument("intermediate_dir", help='', type=str)
     parser.add_argument("output_dir", help='', type=str)
-    parser.add_argument("vg_dir", help='', default='vg', type=str)
+    parser.add_argument("--vg_dir", help='', default='vg', type=str)
     options = parser.parse_args()
 
     options.chrom = options.xg_chrom
