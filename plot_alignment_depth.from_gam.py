@@ -26,7 +26,6 @@ def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, int
 
     fig, ax = plt.subplots()
 
-    python plot_alignment_depth.from_gam.py gam.gam xg.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 intermediate_files HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
     plot_depth(ax, bed, reads_name, chrom, interval_length, full_chrom_length, reads_name, intermediate_dir)
 
     ax.set_xlabel("Chromosome location (binned into " + human_format(interval_length) + " subregions)")
