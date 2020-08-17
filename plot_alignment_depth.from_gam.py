@@ -4,6 +4,7 @@ import subprocess
 import matplotlib.pyplot as plt
 from types import SimpleNamespace
 import pandas as pd
+from argparse import ArgumentParser
 from plot_alignment_depth_shared_fxns import *
 
 def get_mapping_bed(gam, xg, chrom_name, intermediate_dir, outBed, vg_dir):
@@ -15,7 +16,7 @@ def get_mapping_bed(gam, xg, chrom_name, intermediate_dir, outBed, vg_dir):
         # subprocess.run(["bamToBed", "-i", bam], stderr=outf)
     return outBed
 
-def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_dir, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
+def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_file, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
     """
     Current goal: plot depths for first 500Kb of chr20.
     """
@@ -25,6 +26,7 @@ def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, int
 
     fig, ax = plt.subplots()
 
+    python plot_alignment_depth.from_gam.py gam.gam xg.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 intermediate_files HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
     plot_depth(ax, bed, reads_name, chrom, interval_length, full_chrom_length, reads_name, intermediate_dir)
 
     ax.set_xlabel("Chromosome location (binned into " + human_format(interval_length) + " subregions)")
@@ -34,7 +36,8 @@ def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, int
         bottom, top = plt.ylim()
         ax.set_ylim(ylim)
 
-    plt.savefig(output_dir + "/" + reads_name + "_mapped_to_" + chrom + "." + human_format(interval_length) + "_interval.mapping_depth.png")
+    # plt.savefig(output_dir + "/" + reads_name + "_mapped_to_" + chrom + "." + human_format(interval_length) + "_interval.mapping_depth.png")
+    plt.savefig(output_file)
     
 
 def main():
@@ -49,7 +52,11 @@ def main():
 
 
     ## chr20 test:
-    # python plot_alignment_depth.from_gam.py /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 chr20_test/plot_alignment_depth.from_gam/intermediate_files chr20_test/plot_alignment_depth.from_gam/
+    # for running on Robin's computer:
+    # python plot_alignment_depth.from_gam.py /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 chr20_test/plot_alignment_depth.from_gam/intermediate_files chr20_test/plot_alignment_depth.from_gam/HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
+    # simplified:
+    # python plot_alignment_depth.from_gam.py gam.gam xg.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 intermediate_files HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
+
     parser = ArgumentParser()
     parser.add_argument("gam", help='', type=str)
     parser.add_argument("xg", help='', type=str)
