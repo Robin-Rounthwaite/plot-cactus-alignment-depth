@@ -65,6 +65,7 @@ def main():
     parser.add_argument("interval_length", help='', type=int)
     parser.add_argument("intermediate_dir", help='', type=str)
     parser.add_argument("output_dir", help='', type=str)
+    parser.add_argument("vg_dir", help='', default='vg', type=str)
     options = parser.parse_args()
 
     options.chrom = options.xg_chrom
@@ -99,7 +100,7 @@ def main():
     if options.intermediate_dir[-1] == "/":
         options.intermediate_dir = options.intermediate_dir[:-1]
 
-    plot_gam_depths(options.gam, options.xg, options.xg_chrom, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_dir, ylim=None)
+    plot_gam_depths(options.gam, options.xg, options.xg_chrom, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_dir, ylim=None, vg_dir=options.vg_dir)
 if __name__ == "__main__":
     main()
 
