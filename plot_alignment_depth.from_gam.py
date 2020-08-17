@@ -67,7 +67,7 @@ def main():
     parser.add_argument("output_dir", help='', type=str)
     options = parser.parse_args()
 
-    options.xg_chrom = options.chrom
+    options.chrom = options.xg_chrom
 
     # ## chr20 test:
     # options = SimpleNamespace()
