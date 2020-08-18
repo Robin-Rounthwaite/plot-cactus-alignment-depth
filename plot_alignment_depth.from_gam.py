@@ -30,7 +30,7 @@ def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, int
 
     ax.set_xlabel("Chromosome location (binned into " + human_format(interval_length) + " subregions)")
     ax.set_ylabel("Average mapping depth in each " + human_format(interval_length) + " subregion", )
-    ax.set_title("Mapping depth of" + reads_name + " on " + chrom)
+    ax.set_title("Mapping depth of " + reads_name + " on " + chrom)
     if ylim is not None:
         bottom, top = plt.ylim()
         ax.set_ylim(ylim)
@@ -96,8 +96,3 @@ def main():
     plot_gam_depths(options.gam, options.xg, options.xg_chrom, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_file, ylim=None, vg_dir=options.vg_dir)
 if __name__ == "__main__":
     main()
-
-#%%
-output_file = "chr20_test/chr20_ref_mapping_depth_output_using_genome_cov/"
-
-print(output_file)
