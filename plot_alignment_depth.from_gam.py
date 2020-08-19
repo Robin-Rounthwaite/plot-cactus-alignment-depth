@@ -12,11 +12,10 @@ def get_mapping_bed(gam, xg, chrom_name, intermediate_dir, outBed, vg_dir):
     with open(bam, "w") as outf:
         subprocess.run([vg_dir, "surject", "-b", "-p", chrom_name, "-x", xg, gam], stdout=outf)
     unsorted_bed = intermediate_dir + "/" + (".".join(outBed.split(".")[:-1]) + ".unsorted.bam").split("/")[-1]
-    with open(unsortedBed, "w") as outf:
+    with open(unsorted_bed, "w") as outf:
         subprocess.run(["bamToBed", "-i", bam], stdout=outf)
-
     with open(outBed, "w") as outf:
-        subprocess.run(["sortBed", "-i", unsortedBed], stdout=outf)
+        subprocess.run(["sortBed", "-i", unsorted_bed], stdout=outf)
     return outBed
 
     # return unsortedBed
