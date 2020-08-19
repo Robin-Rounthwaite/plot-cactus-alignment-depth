@@ -11,10 +11,15 @@ def get_mapping_bed(gam, xg, chrom_name, intermediate_dir, outBed, vg_dir):
     bam = intermediate_dir + "/" + (".".join(gam.split(".")[:-1]) + ".bam").split("/")[-1]
     with open(bam, "w") as outf:
         subprocess.run([vg_dir, "surject", "-b", "-p", chrom_name, "-x", xg, gam], stdout=outf)
-    with open(outBed, "w") as outf:
+    unsorted_bed = intermediate_dir + "/" + (".".join(outBed.split(".")[:-1]) + ".unsorted.bam").split("/")[-1]
+    with open(unsortedBed, "w") as outf:
         subprocess.run(["bamToBed", "-i", bam], stdout=outf)
-        # subprocess.run(["bamToBed", "-i", bam], stderr=outf)
+
+    with open(outBed, "w") as outf:
+        subprocess.run(["sortBed", "-i", unsortedBed], stdout=outf)
     return outBed
+
+    # return unsortedBed
 
 def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_file, options, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
     """
