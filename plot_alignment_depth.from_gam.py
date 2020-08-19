@@ -78,8 +78,9 @@ def main():
     # python plot_alignment_depth.from_gam.py gam.gam xg.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 intermediate_files HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
 
     parser = ArgumentParser()
-    # parser.add_argument("gam", help='', type=str)
-    # parser.add_argument("xg", help='', type=str)
+    #todo: fix it so I don't have to  comment out gam + xg when running --run_test
+    parser.add_argument("gam", help='', type=str)
+    parser.add_argument("xg", help='', type=str)
     parser.add_argument("xg_chrom", help='', type=str)
     parser.add_argument("reads_name", help='', type=str)
     parser.add_argument("full_chrom_length", help='', type=int) 
