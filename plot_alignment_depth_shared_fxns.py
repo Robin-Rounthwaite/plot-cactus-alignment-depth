@@ -64,13 +64,15 @@ def get_bin_depths(subset_bedfile, chrom, bin_start, bin_stop, intermediate_dir)
 
     return depths
 
-def get_avg_depth(depths, chrom):
+def get_avg_depth(depths, chrom, options):
     depths_for_chrom = depths[depths["chrom"] == chrom]
+    if options.run_test:
+        print("depths", depths)
     chrom_size = depths_for_chrom.loc[0, "chrom_size"]
     avg_depth = sum(depths_for_chrom["depth"].to_numpy() * depths_for_chrom["num_bases"].to_numpy()) / chrom_size
     return avg_depth
         
-def plot_depth(ax, bedfile, asm, chrom, interval_length, full_asm_length, legend_label, intermediate_dir,):
+def plot_depth(ax, bedfile, asm, chrom, interval_length, full_asm_length, legend_label, intermediate_dir, options):
     if not os.path.exists(intermediate_dir + "/subsets/"):
         os.mkdir(intermediate_dir + "/subsets/")
     
@@ -96,8 +98,10 @@ def plot_depth(ax, bedfile, asm, chrom, interval_length, full_asm_length, legend
 
         depths = get_bin_depths(subset, chrom, bin_start, bin_stop, intermediate_dir)
 
-        y.append(get_avg_depth(depths, chrom))
+        y.append(get_avg_depth(depths, chrom, options))
         print("bin", bin_start, "finished for", bedfile)
-
+    if options.run_test:
+        print("x", x)
+        print("y", y)
     ax.plot(x, y, label=legend_label)
     ax.legend()        

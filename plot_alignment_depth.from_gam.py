@@ -16,17 +16,16 @@ def get_mapping_bed(gam, xg, chrom_name, intermediate_dir, outBed, vg_dir):
         # subprocess.run(["bamToBed", "-i", bam], stderr=outf)
     return outBed
 
-def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_file, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
+def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_file, options, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
     """
     Current goal: plot depths for first 500Kb of chr20.
     """
-    #todo: make sure that I only pass bin_stop that's less than full_chrom_length
     bed = intermediate_dir + "/" + (".".join(gam.split(".")[:-1]) + ".bed").split("/")[-1]
     bed = get_mapping_bed(gam, xg, xg_chrom, intermediate_dir, bed, vg_dir)
 
     fig, ax = plt.subplots()
 
-    plot_depth(ax, bed, reads_name, chrom, interval_length, full_chrom_length, reads_name, intermediate_dir)
+    plot_depth(ax, bed, reads_name, chrom, interval_length, full_chrom_length, reads_name, intermediate_dir, options)
 
     ax.set_xlabel("Chromosome location (binned into " + human_format(interval_length) + " subregions)")
     ax.set_ylabel("Average mapping depth in each " + human_format(interval_length) + " subregion", )
@@ -38,6 +37,21 @@ def plot_gam_depths(gam, xg, xg_chrom, chrom, reads_name, full_chrom_length, int
     # plt.savefig(output_dir + "/" + reads_name + "_mapped_to_" + chrom + "." + human_format(interval_length) + "_interval.mapping_depth.png")
     plt.savefig(output_file)
     
+def debug_gam_depths(test_bed, chrom, reads_name, full_chrom_length, interval_length, intermediate_dir, output_file, options, ylim=(0,1.1), vg_dir="/home/robin/paten_lab/vg_binary"):
+    fig, ax = plt.subplots()
+    
+    plot_depth(ax, test_bed, reads_name, chrom, interval_length, full_chrom_length, reads_name, intermediate_dir, options)
+
+    ax.set_xlabel("Chromosome location (binned into " + human_format(interval_length) + " subregions)")
+    ax.set_ylabel("Average mapping depth in each " + human_format(interval_length) + " subregion", )
+    ax.set_title("Mapping depth of " + reads_name + " on " + chrom)
+    if ylim is not None:
+        # bottom, top = plt.ylim()
+        ax.set_ylim(ylim)
+
+    # plt.savefig(output_dir + "/" + reads_name + "_mapped_to_" + chrom + "." + human_format(interval_length) + "_interval.mapping_depth.png")
+    plt.savefig(output_file)
+
 
 def main():
     # parser = ArgumentParser()
@@ -53,12 +67,14 @@ def main():
     ## chr20 test:
     # for running on Robin's computer:
     # python plot_alignment_depth.from_gam.py /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/first_100.gam /home/robin/paten_lab/cactus_projects/analyze_chr20_cactus_alignments/mapping_pileups/lc2019_12ont-hg38.cactus.minimap2_star-all-to-ref-fatanc-no-secondary-july-8.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 chr20_test/plot_alignment_depth.from_gam/intermediate_files chr20_test/plot_alignment_depth.from_gam/HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
+    # for debugging on Robin's computer:
+    # python plot_alignment_depth.from_gam.py hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 32222000 chr20_test/debug_gam_depths/intermediate_files chr20_test/debug_gam_depths/debug_gam_depths.png --run_test --test_bed debug_gam_depths.bed 
     # simplified:
     # python plot_alignment_depth.from_gam.py gam.gam xg.xg hg38_chr20.chr20 HG002-glenn_giabfeb26 64444167 1000000 intermediate_files HG002-glenn_giabfeb26.giraffe39k15wPaths.mapped_to_chr20.1M_interval.mapping_depths.png
 
     parser = ArgumentParser()
-    parser.add_argument("gam", help='', type=str)
-    parser.add_argument("xg", help='', type=str)
+    # parser.add_argument("gam", help='', type=str)
+    # parser.add_argument("xg", help='', type=str)
     parser.add_argument("xg_chrom", help='', type=str)
     parser.add_argument("reads_name", help='', type=str)
     parser.add_argument("full_chrom_length", help='', type=int) 
@@ -66,6 +82,8 @@ def main():
     parser.add_argument("intermediate_dir", help='', type=str)
     parser.add_argument("output_file", help='', type=str)
     parser.add_argument("--vg_dir", help='', default='vg', type=str)
+    parser.add_argument("--run_test", help='', action='store_true')
+    parser.add_argument("--test_bed", help='', type=str)
     options = parser.parse_args()
 
     options.chrom = options.xg_chrom
@@ -93,6 +111,9 @@ def main():
     if options.intermediate_dir[-1] == "/":
         options.intermediate_dir = options.intermediate_dir[:-1]
 
-    plot_gam_depths(options.gam, options.xg, options.xg_chrom, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_file, ylim=None, vg_dir=options.vg_dir)
+    if options.run_test:
+        debug_gam_depths(options.test_bed, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_file, options, ylim=None, vg_dir=options.vg_dir)
+    else:
+        plot_gam_depths(options.gam, options.xg, options.xg_chrom, options.chrom, options.reads_name, options.full_chrom_length, options.interval_length, options.intermediate_dir, options.output_file, options, ylim=None, vg_dir=options.vg_dir)
 if __name__ == "__main__":
     main()
